@@ -24,7 +24,7 @@ app.get('/dogs', (req, res) => {
     return res.json(dogsList);
 });
 
-const server = app.listen(9001, (err) => {
+const server = app.listen(process.env.PORT, (err) => {
     if (err) {
         console.error('Error starting server');
         throw err;
