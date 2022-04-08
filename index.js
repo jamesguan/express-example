@@ -1,5 +1,14 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
+
+const database = require('./database/connection');
+
+const Dog = require('./database/Dog');
+
+database.connect();
+
+Dog.sync({ alter: true });
 
 const app = express();
 const PORT = process.env.PORT;
@@ -12,17 +21,23 @@ app.get('/', (req, res) => {
    }) 
 });
 
-const dogsList = [];
-
-app.post('/dogs', (req, res) => {
+app.post('/dogs', async (req, res) => {
     const { dogName } = req.body;
-    console.log(req.body);
-    dogsList.push(dogName);
+    console.log(req.body);    
+
+    const dog = await Dog.create({
+        dogName,
+    });
+
+    dog.save();
+
     res.status(204).send();
 });
 
-app.get('/dogs', (req, res) => {
-    return res.json(dogsList);
+app.get('/dogs', async (req, res) => {
+    const dogs = await Dog.findAll();
+    console.log(dogs);
+    return res.json(dogs);
 });
 
 const server = app.listen(PORT, (err) => {
