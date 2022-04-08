@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const app = express();
+const PORT = process.env.PORT;
 
 app.use(bodyParser.json());
 
@@ -24,13 +25,13 @@ app.get('/dogs', (req, res) => {
     return res.json(dogsList);
 });
 
-const server = app.listen(process.env.PORT, (err) => {
+const server = app.listen(PORT, (err) => {
     if (err) {
         console.error('Error starting server');
         throw err;
     }
 
-    console.log('Started on port 9001');
+    console.log(`Started on port ${PORT}`);
 });
 
 
